@@ -12,6 +12,7 @@ const refs = {
 };
 const CHANGE_DELAY = 1000;
 let intervalId = null;
+let startDate = null;
 refs.btnStart.disabled = true;
 const options = {
   enableTime: true,
@@ -25,19 +26,22 @@ const options = {
       refs.btnStart.disabled = true;
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
+      startDate = selectedDates
       refs.btnStart.disabled = false;
     }
-    function runReverseTimer() {
-      refs.btnStart.disabled = true;
-      refs.input.disabled = true;
-      getDate(selectedDates);
-      intervalId = setInterval(() => {
-        getDate(selectedDates);
-      }, CHANGE_DELAY);
-    }
-    refs.btnStart.addEventListener('click', runReverseTimer);
+    
   },
 };
+function runReverseTimer() {
+  refs.btnStart.disabled = true;
+  refs.input.disabled = true;
+  getDate(startDate);
+  intervalId = setInterval(() => {
+    getDate(startDate);
+  }, CHANGE_DELAY);
+}
+refs.btnStart.addEventListener('click', runReverseTimer);
+
 function getDate(selectedDates) {
   let currentTime = Date.now();
   let deltaTime = selectedDates[0] - currentTime;
